@@ -62,113 +62,17 @@ const Forms = () => {
       email: "",
       phone: "",
       institute: "",
+      areYou: "",
       designation: "",
       speciality: "",
-      consent: false,
-      consentSecond: false,
+      consent: "",
+      consentSecond: "",
     },
     validationSchema: schema,
-    // onSubmit: (values, { resetForm }) => {
-    //   console.log(values);
-    //   setLoading(true);
-    //   const googleSheetData = {
-    //     FirstName: values.firstName,
-    //     LastName: values.lastName,
-    //     Email: values.email,
-    //     NumberOfGuests: values.numberOfGuests,
-    //   };
-    //   // MySwal.fire({
-    //   //   icon: "success",
-    //   //   title: "You are welcome",
-    //   // });
-    //   // setLoading(false);
 
-    //   emailjs
-    //     .sendForm(
-    //       import.meta.env.VITE_SERVICE_ID,
-    //       import.meta.env.VITE_HOTEL_TEMPLATE,
-    //       formRef.current,
-    //       import.meta.env.VITE_PUBLIC_KEY
-    //     )
-    //     .then((res) => {
-    //       console.log("Email sent successfully:", res);
-    //       // Proceed to submit to Google Sheets
-    //       return fetch(import.meta.env.VITE_BOOKING_REQUESTDB, {
-    //         method: "POST",
-    //         headers: {
-    //           Accept: "application/json",
-    //           "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify({
-    //           data: [googleSheetData],
-    //         }),
-    //       });
-    //     })
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //       console.log("Data submitted to sucessful:", data);
-    //       MySwal.fire({
-    //         icon: "success",
-    //         title: "You are welcome",
-    //       });
-    //       setTimeout(() => {
-    //         setLoading(false);
-    //         resetForm();
-    //       }, 1000);
-    //     })
-    //     .catch((error) => {
-    //       console.error("Error:", error);
-    //       MySwal.fire({
-    //         icon: "error",
-    //         title: "Oops...",
-    //         text: "Pls Enter correct Email id or Try after some time",
-    //       });
-    //       setTimeout(() => {
-    //         setLoading(false);
-    //         resetForm();
-    //       }, 2000);
-    //     });
-
-    //   //   emailjs
-    //   //     .sendForm(
-    //   //       import.meta.env.VITE_SERVICE_ID,
-    //   //       import.meta.env.VITE_TEMPLATE,
-    //   //       formRef.current,
-    //   //       import.meta.env.VITE_PUBLIC_KEY
-    //   //     )
-    //   //     .then((res) => {
-    //   //       MySwal.fire({
-    //   //         icon: "success",
-    //   //         title: "Form Submitted Sucessfully",
-    //   //         time: 1000,
-    //   //       });
-    //   //       console.log(res);
-    //   //     })
-    //   //     .catch((err) => {
-    //   //       MySwal.fire({
-    //   //         icon: "error",
-    //   //         title: "Failed to Submit",
-    //   //         time: 1000,
-    //   //       });
-    //   //       console.log(err, "hello");
-    //   //     });
-    //   //   setTimeout(() => {
-    //   //     setLoading(false);
-    //   //     resetForm();
-    //   //   }, 1000 * 2);
-    // },
     onSubmit: async (values, { resetForm }) => {
       console.log(values);
 
-      // Check if the email is in the allowed list
-      // if (!allowedEmails.includes(values.email)) {
-      //   MySwal.fire({
-      //     icon: "error",
-      //     title: "Not Allowed",
-      //     text: "You are not allowed to fill this form.",
-      //   });
-      //   return;
-      // }
       setLoading(true);
       // Fetch data from the Google Sheet to check if the phone has already been submitted
       const response = await fetch(import.meta.env.VITE_BOOKING_REQUESTDB);
@@ -214,21 +118,78 @@ const Forms = () => {
 
       // Playing Only with google sheet
 
-      fetch(import.meta.env.VITE_BOOKING_REQUESTDB, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          data: [googleSheetData],
-        }),
-      })
-        .then((response) => {
-          response.json();
+      // fetch(import.meta.env.VITE_BOOKING_REQUESTDB, {
+      //   method: "POST",
+      //   headers: {
+      //     Accept: "application/json",
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     data: [googleSheetData],
+      //   }),
+      // })
+      //   .then((response) => {
+      //     response.json();
+      //   })
+      //   .then((data) => {
+      //     console.log(data);
+      //     MySwal.fire({
+      //       icon: "success",
+      //       title:
+      //         "Thank you for registering for CAHO DIAGNOSTICON 2025. We wish you an enriching learning and networking experience.",
+      //       imageUrl: CahoIcon, // Use the imported logo
+      //       imageWidth: 200, // Adjust the size as needed
+      //       // imageHeight: 100,
+      //       imageAlt: "Custom logo",
+      //       customClass: {
+      //         title: "swal-title",
+      //         text: "swal-text",
+      //       },
+      //     });
+      //     setTimeout(() => {
+      //       setLoading(false);
+      //       resetForm();
+      //     }, 1000);
+      //   })
+      //   .catch((error) => {
+      //     MySwal.fire({
+      //       icon: "error",
+      //       title: "Oops...",
+      //       text: "Try after some time",
+      //     });
+      //     console.error("Error fetching data:", error);
+      //     setTimeout(() => {
+      //       setLoading(false);
+      //     }, 1000 * 2);
+      //     console.error("Error:", error);
+      //   });
+
+      // Playing with Google sheet and email js
+
+      emailjs
+        .sendForm(
+          import.meta.env.VITE_SERVICE_ID,
+          import.meta.env.VITE_HOTEL_TEMPLATE,
+          formRef.current,
+          import.meta.env.VITE_PUBLIC_KEY
+        )
+        .then((res) => {
+          console.log("Email sent successfully:", res);
+          // Proceed to submit to Google Sheets
+          return fetch(import.meta.env.VITE_BOOKING_REQUESTDB, {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              data: [googleSheetData],
+            }),
+          });
         })
+        .then((response) => response.json())
         .then((data) => {
-          console.log(data);
+          console.log("Data submitted successfully:", data);
           MySwal.fire({
             icon: "success",
             title:
@@ -248,74 +209,17 @@ const Forms = () => {
           }, 1000);
         })
         .catch((error) => {
+          console.error("Error:", error);
           MySwal.fire({
             icon: "error",
             title: "Oops...",
-            text: "Try after some time",
+            text: "Please enter a correct Email ID or try again later. Please contact the Help Desk, in case you need any further assistance.",
           });
-          console.error("Error fetching data:", error);
           setTimeout(() => {
             setLoading(false);
-          }, 1000 * 2);
-          console.error("Error:", error);
+            resetForm();
+          }, 2000);
         });
-
-      // Playing with Google sheet and email js
-
-      // emailjs
-      //   .sendForm(
-      //     import.meta.env.VITE_SERVICE_ID,
-      //     import.meta.env.VITE_HOTEL_TEMPLATE,
-      //     formRef.current,
-      //     import.meta.env.VITE_PUBLIC_KEY
-      //   )
-      //   .then((res) => {
-      //     console.log("Email sent successfully:", res);
-      //     // Proceed to submit to Google Sheets
-      //     return fetch(import.meta.env.VITE_BOOKING_REQUESTDB, {
-      //       method: "POST",
-      //       headers: {
-      //         Accept: "application/json",
-      //         "Content-Type": "application/json",
-      //       },
-      //       body: JSON.stringify({
-      //         data: [googleSheetData],
-      //       }),
-      //     });
-      //   })
-      //   .then((response) => response.json())
-      //   .then((data) => {
-      //     console.log("Data submitted to Google Sheets successfully:", data);
-      // MySwal.fire({
-      //   icon: "success",
-      //   title:
-      //     "Thank you for registering for CAHO DIAGNOSTICON 2025. We wish you an enriching learning and networking experience.",
-      //   imageUrl: CahoIcon, // Use the imported logo
-      //   imageWidth: 200, // Adjust the size as needed
-      //   // imageHeight: 100,
-      //   imageAlt: "Custom logo",
-      //   customClass: {
-      //     title: "swal-title",
-      //     text: "swal-text",
-      //   },
-      //      });
-      //     setTimeout(() => {
-      //       setLoading(false);
-      //       resetForm();
-      //     }, 1000);
-      //   })
-      //   .catch((error) => {
-      //     console.error("Error:", error);
-      //     MySwal.fire({
-      //       icon: "error",
-      //       title: "Oops...",
-      //       text: "Please enter a correct Email ID or try again later.",
-      //     });
-      //     setTimeout(() => {
-      //       setLoading(false);
-      //       resetForm();
-      //     }, 2000);
-      //   });
     },
   });
 
@@ -371,7 +275,6 @@ const Forms = () => {
                 className="montaga-regulars">
                 {formik.errors.firstName}
               </Form.Control.Feedback>{" "}
-              g
             </Form.Group>
             <Form.Group
               as={Col}
@@ -557,7 +460,7 @@ const Forms = () => {
                 isInvalid={!!formik.errors.areYou}>
                 <option>-Select-</option>
                 <option value="Delegate">Delegate</option>
-                <option value="Delegate">Student</option>
+                <option value="Student">Student</option>
                 <option value="Volunteer">Volunteer</option>
                 <option value="Sponsor/Partner/Exhibitor">
                   Sponsor/Partner/Exhibitor
